@@ -44,7 +44,7 @@ ALLOW_REBUILD (false)
   Allow building the same revision again.
 */
 
-@Library('kernelci') _
+@Library('kernelci-mattface') _
 import org.kernelci.build.Kernel
 import org.kernelci.util.Job
 

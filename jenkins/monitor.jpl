@@ -42,7 +42,7 @@ DOCKER_BASE (kernelci/build-)
 
 */
 
-@Library('kernelci') _
+@Library('kernelci-mattface') _
 import org.kernelci.util.Job
 
 def checkConfig(config, kci_core, trees_dir) {

@@ -45,7 +45,7 @@ sudo touch ${BASEDIR}/${ARCH}.done
 # Check if all builds for all architectures have finished. The magic number here is 4 (arm, arm64, x86, mips64)
 # This magic number will need to be changed if new architectures are added.
 export BUILDS_FINISHED=$(ls ${BASEDIR}/ | grep .done | wc -l)
-if [[ BUILDS_FINISHED -eq 4 ]]; then
+if [[ BUILDS_FINISHED -eq 1 ]]; then
     echo "All builds have now finished, triggering testing..."
     # Tell the dashboard the job has finished build.
     echo "Build has now finished, reporting result to dashboard."
@@ -197,6 +197,10 @@ if [[ BUILDS_FINISHED -eq 4 ]]; then
         echo "Sending results for media tree"
         curl -X POST -H "Authorization: $EMAIL_AUTH_TOKEN" -H "Content-Type: application/json" -d '{"job": "'$TREE_NAME'", "kernel": "'$GIT_DESCRIBE'", "git_branch": "'$BRANCH'",  "report_type": "test", "plan": "v4l2-compliance-vivid", "send_to": ["gtucker@collabora.com", "ezequiel@collabora.com"], "format": ["txt"], "delay": 5400}' ${API}/send
         curl -X POST -H "Authorization: $EMAIL_AUTH_TOKEN" -H "Content-Type: application/json" -d '{"job": "'$TREE_NAME'", "kernel": "'$GIT_DESCRIBE'", "git_branch": "'$BRANCH'",  "report_type": "test", "plan": "v4l2-compliance-uvc", "send_to": ["gtucker@collabora.com", "ezequiel@collabora.com"], "format": ["txt"], "delay": 5400}' ${API}/send
+    elif [ "$TREE_NAME" == "next-clang" ]; then
+        echo "Sending results to Linux Next (clang only)"
+        curl -X POST -H "Authorization: $EMAIL_AUTH_TOKEN" -H "Content-Type: application/json" -d '{"job": "'$TREE_NAME'", "kernel": "'$GIT_DESCRIBE'", "git_branch": "'$BRANCH'", "build_report": 1, "send_to": ["natechancellor@gmail.com", "broonie@kernel.org", "arnd.bergmann@linaro.org", "ndesaulniers@google.com", "kernel-build-reports@lists.linaro.org", "trong@google.com", "matthew.hart@linaro.org", "dan.rue@linaro.org"], "format": ["txt"], "delay": 10}' ${API}/send
+        curl -X POST -H "Authorization: $EMAIL_AUTH_TOKEN" -H "Content-Type: application/json" -d '{"job": "'$TREE_NAME'", "kernel": "'$GIT_DESCRIBE'", "git_branch": "'$BRANCH'", "boot_report": 1, "send_to": ["natechancellor@gmail.com", "broonie@kernel.org", "arnd.bergmann@linaro.org", "ndesaulniers@google.com", "kernel-build-reports@lists.linaro.org", "trong@google.com", "matthew.hart@linaro.org", "dan.rue@linaro.org"], "format": ["txt"], "delay": 7200}' ${API}/send
     else
         # Private Mailing List
         echo "Sending results to private mailing list"

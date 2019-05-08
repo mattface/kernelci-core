@@ -58,7 +58,7 @@ PARALLEL_BUILDS
  */
 
 
-@Library('kernelci') _
+@Library('kernelci-mattface') _
 import org.kernelci.build.Kernel
 import org.kernelci.util.Job
 
@@ -109,7 +109,7 @@ publish_kernel \
     }
 }
 
-node("docker && builder") {
+node("next-clang") {
     def j = new Job()
     def k = new Kernel()
     def kci_core = "${env.WORKSPACE}/kernelci-core"
